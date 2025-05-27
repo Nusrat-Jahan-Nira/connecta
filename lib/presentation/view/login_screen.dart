@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../util/auth_service.dart';
 import '../../util/database_service.dart';
+import 'chat_screen.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -34,7 +35,18 @@ class _LoginScreenState extends State<LoginScreen> {
         });
 
         // Once logged in, fetch some data
-        _fetchData();
+       // _fetchData();
+
+        // Navigate to chat screen after successful login
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ChatScreen(
+              userId: result['user']['id'],
+              username: _emailController.text.split('@')[0], // Simple username from email
+              authToken: _authToken,
+            ),
+          ),
+        );
       } else {
         setState(() {
           _errorMessage = result['error_description'] ?? 'Unknown error';
