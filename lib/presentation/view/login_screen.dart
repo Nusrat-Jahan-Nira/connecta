@@ -1,3 +1,4 @@
+import 'package:connecta/presentation/view/users_screen.dart';
 import 'package:flutter/material.dart';
 import '../../util/auth_service.dart';
 import '../../util/database_service.dart';
@@ -17,11 +18,18 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _errorMessage;
   String? _authToken;
 
+  initState() {
+    super.initState();
+    // Optionally, you can clear the controllers when the screen is initialized
+    _emailController.text = 'nusrat@era.com';
+    _passwordController.text = 'abc@123';
+  }
   Future<void> _signIn() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
+
 
     try {
       final result = await _authService.signIn(
@@ -38,10 +46,22 @@ class _LoginScreenState extends State<LoginScreen> {
        // _fetchData();
 
         // Navigate to chat screen after successful login
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => ChatScreen(
+        //       userId: result['user']['id'],
+        //       username: _emailController.text.split('@')[0], // Simple username from email
+        //       authToken: _authToken,
+        //     ),
+        //   ),
+        // );
+
+
+        // In your LoginScreen.dart, change the navigation after successful login
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ChatScreen(
-              userId: result['user']['id'],
+            builder: (context) => UsersScreen(
+              currentUserId: result['user']['id'],
               username: _emailController.text.split('@')[0], // Simple username from email
               authToken: _authToken,
             ),
